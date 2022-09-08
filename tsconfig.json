@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "target": "es2022",
+    "module": "esnext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+
+    "lib": ["es2021"],
+    "skipLibCheck": true,
+
+    "newLine": "lf",
+    "noErrorTruncation": true,
+
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+  },
+  "include": ["**/*.ts", "**/*.d.ts", "**/*.json"]
+}

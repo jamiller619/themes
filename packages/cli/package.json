@@ -1,0 +1,21 @@
+{
+  "name": "@themes/cli",
+  "version": "0.0.0",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/main.js",
+  "scripts": {
+    "dx": "yarn run:node scripts/build.ts -w",
+    "run:node": "node -r dotenv/config --experimental-json-modules --loader ts-node/esm"
+  },
+  "dependencies": {
+    "@radix-ui/colors": "^0.1.8",
+    "chalk": "^5.0.1",
+    "dotenv": "^16.0.2",
+    "ts-json-schema-generator": "^1.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.15.7"
+  }
+}
