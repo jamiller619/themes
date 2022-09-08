@@ -16,7 +16,7 @@ let proc: ChildProcess | null = null
 
 const build = () => {
   proc && proc.kill()
-  proc = spawn('node', ['-r', 'dotenv/config', 'dist/main.js'], {
+  proc = spawn('node', ['-r', 'dotenv/config', '.'], {
     stdio: 'inherit',
   })
 }
