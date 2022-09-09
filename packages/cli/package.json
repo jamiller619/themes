@@ -5,17 +5,26 @@
   "license": "MIT",
   "private": true,
   "main": "dist/main.js",
+  "bin": {
+    "themes": "dist/main.js"
+  },
   "scripts": {
-    "dx": "yarn run:node scripts/build.ts -w",
+    "dx": "yarn schema:chk && yarn run:node scripts/build.ts -w",
+    "schema:chk": "yarn run:node scripts/schema.ts",
     "run:node": "node -r dotenv/config --experimental-json-modules --loader ts-node/esm"
   },
   "dependencies": {
     "@radix-ui/colors": "^0.1.8",
+    "ajv": "^8.11.0",
     "chalk": "^5.0.1",
     "dotenv": "^16.0.2",
-    "ts-json-schema-generator": "^1.0.0"
+    "json-schema": "^0.4.0",
+    "ts-json-schema-generator": "^1.0.0",
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
+    "@types/json-schema": "^7.0.11",
+    "@types/yargs": "^17.0.12",
     "esbuild": "^0.15.7"
   }
 }

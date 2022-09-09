@@ -1,13 +1,15 @@
+#!/usr/bin/env node
+
 import chalk from 'chalk'
 import esbuild from 'esbuild'
 import path from 'node:path'
 import process from 'node:process'
-import url from 'node:url'
 import pkgJSON from '../package.json' assert { type: 'json' }
 import { ChildProcess, spawn } from 'node:child_process'
+import dirname from '../lib/dirname.js'
 
 const isProd = process.env.NODE_ENV === 'production'
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const __dirname = dirname(import.meta.url)
 
 console.log(chalk.dim(`\nBuilding ${chalk.blue('@themes/cli')}\n`))
 
