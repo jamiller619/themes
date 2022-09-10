@@ -1,9 +1,9 @@
 import * as RadixColors from '@radix-ui/colors'
 import { ColorScheme, colorSteps } from './Colors'
 
-export default function expand(colorScheme: ColorScheme) {
+export default function expand(colorScheme: string) {
   const result: Record<string, string> = {}
-  const steps = RadixColors[colorScheme]
+  const steps = RadixColors[colorScheme as ColorScheme]
 
   if (steps == null) {
     throw new Error(
@@ -11,7 +11,7 @@ export default function expand(colorScheme: ColorScheme) {
     )
   }
 
-  const colors = Object.values(RadixColors[colorScheme])
+  const colors = Object.values(RadixColors[colorScheme as ColorScheme])
 
   for (let i = 0; i < colors.length; i += 1) {
     result[colorSteps[i]] = colors[i]
