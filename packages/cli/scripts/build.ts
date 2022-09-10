@@ -53,8 +53,8 @@ const result = await esbuild.build({
         console.error(err)
       } else {
         console.log(
-          chalk.green(
-            `✔️  rebuild successful at ${chalk.dim(
+          chalk.greenBright(
+            `🗸 rebuild successful at ${chalk.dim(
               new Date().toLocaleTimeString()
             )}`
           )
@@ -76,4 +76,6 @@ if (result.warnings.length > 0) {
 
 if (!isWatchMode) {
   console.log(chalk.greenBright('🗸 Build completed successfully!'))
+
+  process.exit(0)
 }
