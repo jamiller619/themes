@@ -23,3 +23,6 @@ bin
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# This file is generated at build-time
+./packages/cli/src/theme/schema.json
