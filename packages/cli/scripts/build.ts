@@ -1,29 +1,26 @@
 #!/usr/bin/env node
-
-import chalk from 'chalk'
-import esbuild from 'esbuild'
 import path from 'node:path'
 import process from 'node:process'
-import pkgJSON from '../package.json' assert { type: 'json' }
-import { ChildProcess, spawn } from 'node:child_process'
+import { TsconfigPathsPlugin } from '@esbuild-plugins/tsconfig-paths'
+import chalk from 'chalk'
+import esbuild from 'esbuild'
 import dirname from '../lib/dirname.js'
+import pkgJSON from '../package.json' assert { type: 'json' }
 
 const isProd = process.env.NODE_ENV === 'production'
 const __dirname = dirname(import.meta.url)
-
-console.log(chalk.dim(`\nBuilding ${chalk.blue('@themes/cli')}\n`))
-
 const isWatchMode = process.argv.includes('-w')
-let proc: ChildProcess | null = null
 
-const build = () => {
-  proc && proc.kill()
-  proc = spawn('node', ['-r', 'dotenv/config', '.'], {
-    stdio: 'inherit',
-  })
-}
+console.log(
+  `\n${chalk.bgBlueBright(isWatchMode ? 'Watching' : 'Building')} ${chalk.dim(
+    '@themes/cli\n'
+  )}`
+)
 
 const result = await esbuild.build({
+  plugins: [
+    TsconfigPathsPlugin({ tsconfig: path.join(__dirname, '../tsconfig.json') }),
+  ],
   entryPoints: [path.join(__dirname, '../src/main.ts')],
   bundle: true,
   outfile: path.join(__dirname, '../dist', `main${isProd ? '.min' : ''}.js`),
@@ -36,11 +33,17 @@ const result = await esbuild.build({
   watch: {
     onRebuild(err) {
       if (err) {
-        console.error('watch build failed:', err)
+        console.error(err)
       } else {
-        build()
+        console.log(
+          chalk.green(
+            `✔️  rebuild successful at ${chalk.dim(
+              new Date().toLocaleTimeString()
+            )}`
+          )
+        )
       }
-    }
+    },
   },
 })
 
@@ -53,7 +56,5 @@ if (result.warnings.length > 0) {
 }
 
 if (!isWatchMode) {
-  console.log(chalk.greenBright('Build completed successfully!'))
-} else {
-  build()
+  console.log(chalk.greenBright('🗸 Build completed successfully!'))
 }

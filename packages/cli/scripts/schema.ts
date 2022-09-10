@@ -12,7 +12,7 @@ const root = path.resolve(dirname(import.meta.url), '../')
 
 const config = {
   path: path.join(root, 'src/theme/Theme.ts'),
-  tsconfig: path.join(root, 'tsconfig.json'),
+  tsconfig: path.join(root, '../../tsconfig.json'),
   type: '*',
 }
 
