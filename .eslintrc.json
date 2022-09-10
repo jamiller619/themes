@@ -17,7 +17,7 @@
     "es6": true,
     "node": true
   },
-  "ignorePatterns": ["dist"],
+  "ignorePatterns": ["bin"],
   "rules": {
     "quotes": "off",
     "semi": "off",

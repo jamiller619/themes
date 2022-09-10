@@ -23,7 +23,7 @@ const { Generator } = dts
 const buildTypes = async () => {
   new Generator({
     entry: 'src/index.ts',
-    output: 'dist/index.d.ts',
+    output: 'bin/index.d.ts',
   }).generate()
 }
 
@@ -34,7 +34,7 @@ const result = await esbuild.build({
   bundle: true,
 
   entryPoints: [path.join(__dirname, '../src/index.ts')],
-  outfile: path.join(__dirname, '../dist', `index${isProd ? '.min' : ''}.js`),
+  outfile: path.join(__dirname, '../bin', `index${isProd ? '.min' : ''}.js`),
 
   platform: 'node',
   target: 'node16.17',

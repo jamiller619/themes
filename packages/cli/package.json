@@ -4,13 +4,13 @@
   "type": "module",
   "license": "MIT",
   "private": true,
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "bin/index.js",
+  "typings": "bin/index.d.ts",
   "bin": {
-    "themes": "dist/index.js"
+    "themes": "bin/index.js"
   },
   "files": [
-    "dist/**/*"
+    "bin/**/*"
   ],
   "repository": {
     "type": "git",
