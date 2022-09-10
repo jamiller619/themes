@@ -25,4 +25,4 @@ bin
 !.vscode/extensions.json
 
 # This file is generated at build-time
-./packages/cli/src/theme/schema.json
+packages/cli/src/theme/schema.json
