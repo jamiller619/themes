@@ -14,6 +14,10 @@ import schema from './schema.json' assert { type: 'json' }
 const log = debug('theme.build')
 
 const ajv = new Ajv()
+const marks = {
+  pass: '✔️ ',
+  fail: '❌',
+}
 
 const readFile = async <T>(path: string) => {
   try {
@@ -63,15 +67,6 @@ const convertThemeToCSSProperties = (
   return `:root {\n ${toCustomPropertiesString(theme).replaceAll(';', ';\n')}}`
 }
 
-const saveFile = async (
-  dest: string,
-  data: Parameters<typeof fs.writeFile>[1]
-) => {
-  await fs.writeFile(dest, data)
-
-  console.log(`${chalk.dim(`File saved `)} ${dest}`)
-}
-
 type BuildOptions = {
   theme: string
   css: string
@@ -94,10 +89,12 @@ export default async function build(input: string, opts: BuildOptions) {
   const valid = ajv.validate(schema, data)
 
   if (!valid) {
+    console.log(marks.fail, chalk.red('Failed JSON schema validation'))
+
     return console.error(ajv.errors)
   }
 
-  log(`Passed JSON schema validation`)
+  console.log(marks.pass, chalk.green(`Passed JSON schema validation`))
 
   const { colors, scale, name, ...theme } = data
 
@@ -135,11 +132,22 @@ export default async function build(input: string, opts: BuildOptions) {
     }, {} as Record<string, string | Record<string, string>>),
   } as Record<string, string | number | Record<string, string>>
 
-  await saveFile(themeFilePath, JSON.stringify(outputTheme, null, 2))
-  await saveFile(
+  await fs.writeFile(themeFilePath, JSON.stringify(outputTheme, null, 2))
+
+  console.log(
+    marks.pass,
+    chalk.green(`Theme saved: ${chalk.dim(themeFilePath)}`)
+  )
+
+  await fs.writeFile(
     cssPropertiesFilePath,
     convertThemeToCSSProperties(outputTheme)
   )
 
-  console.log(chalk.green(`✔️  Done!`))
+  console.log(
+    marks.pass,
+    chalk.green(`CSS Properties saved: ${chalk.dim(cssPropertiesFilePath)}`)
+  )
+
+  console.log(marks.pass, chalk.green(`Done!`))
 }
