@@ -1,4 +1,4 @@
-import { ColorRole, ColorScheme, ColorStep } from '~/colors'
+import { ColorRole, ColorStep } from '~/colors'
 import { ModularScaleOptions } from '~/modular-scale'
 
 export type CustomUnit<T = number | string> = {
@@ -11,16 +11,6 @@ export type Scale<T = number | string> = {
   heading?: T
 }
 
-// export type ThemeValue =
-//   | number
-//   | number[]
-//   | string
-//   | string[]
-//   | CustomUnit
-//   | Scale
-//   | Scale<CustomUnit>
-
-// type AOrArrayOf<T> = T | T[]
 export type OutputThemeValue<T = string> = T | T[]
 export type InputThemeValue<T = string | number> =
   | T
@@ -44,7 +34,7 @@ export type InputTheme = {
     bold?: number
   }
   lineHeights?: Scale
-  colors: Record<ColorRole, ColorScheme>
+  colors: Record<string, string>
 }
 
 export type OutputTheme = Omit<InputTheme, 'colors' | 'scale' | 'radii'> & {

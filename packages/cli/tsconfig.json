@@ -1,11 +1,10 @@
 {
   "extends": "../../tsconfig.json",
+  "include": ["**/*.ts", "**/*.d.ts", "**/*.json"],
   "compilerOptions": {
-    "composite": true,
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"]
     }
-  },
-  "include": ["**/*.ts", "**/*.d.ts", "**/*.json"]
+  }
 }

@@ -10,10 +10,10 @@ import dirname from '../lib/dirname.js'
 
 const root = path.resolve(dirname(import.meta.url), '../')
 
-const config = {
+const config: tsj.Config = {
   path: path.join(root, 'src/theme/Theme.ts'),
-  tsconfig: path.join(root, '../../tsconfig.json'),
-  type: '*',
+  tsconfig: path.join(root, 'tsconfig.json'),
+  type: 'InputTheme',
 }
 
 const schemaDestPath = path.join(root, 'src/theme/schema.json')
