@@ -112,7 +112,7 @@ export default async function build(input: string, opts: BuildOptions) {
     return [key, parsedValue]
   })
 
-  const scales = createScales(data.scale)
+  const scales = createScales(scale)
   const expandedColors = Object.entries(colors).map(([key, value]) => {
     return [key, expandToRadixColor(value)] as [
       ColorRole,
@@ -123,14 +123,21 @@ export default async function build(input: string, opts: BuildOptions) {
   const outputTheme = {
     ...theme,
     ...result,
-    fontSizes: scales,
-    space: scales,
+    scale: scales,
     colors: expandedColors.reduce((acc, curr) => {
       acc[curr[0]] = curr[1]
 
       return acc
     }, {} as Record<string, string | Record<string, string>>),
   } as Record<string, string | number | Record<string, string>>
+
+  if (scale?.field) {
+    outputTheme[scale.field] = scales
+  } else if (scale?.fields) {
+    for (const field of scale.fields) {
+      outputTheme[field] = scales
+    }
+  }
 
   await fs.writeFile(themeFilePath, JSON.stringify(outputTheme, null, 2))
 

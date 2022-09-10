@@ -10,8 +10,6 @@ export type ModularScaleOptions = {
   ratio?: string | number
   points?: string | number
   pointStart?: string | number
-  field?: string
-  fields?: string[]
 }
 
 const defaultOptions = {
