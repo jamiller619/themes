@@ -17,6 +17,8 @@
     "strict": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
+
+    "incremental": false
   },
   "include": ["**/*.ts", "**/*.d.ts", "**/*.json"]
 }

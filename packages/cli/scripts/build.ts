@@ -4,6 +4,7 @@ import process from 'node:process'
 import { TsconfigPathsPlugin } from '@esbuild-plugins/tsconfig-paths'
 import chalk from 'chalk'
 import esbuild from 'esbuild'
+import dts from 'npm-dts'
 import dirname from '../lib/dirname.js'
 import pkgJSON from '../package.json' assert { type: 'json' }
 
@@ -17,21 +18,37 @@ console.log(
   )}`
 )
 
+const { Generator } = dts
+
+const buildTypes = async () => {
+  new Generator({
+    entry: 'src/index.ts',
+    output: 'dist/index.d.ts',
+  }).generate()
+}
+
 const result = await esbuild.build({
   plugins: [
     TsconfigPathsPlugin({ tsconfig: path.join(__dirname, '../tsconfig.json') }),
   ],
-  entryPoints: [path.join(__dirname, '../src/main.ts')],
   bundle: true,
-  outfile: path.join(__dirname, '../dist', `main${isProd ? '.min' : ''}.js`),
+
+  entryPoints: [path.join(__dirname, '../src/index.ts')],
+  outfile: path.join(__dirname, '../dist', `index${isProd ? '.min' : ''}.js`),
+
   platform: 'node',
   target: 'node16.17',
   format: 'esm',
+
   sourcemap: true,
   minify: isProd,
+
   external: Object.keys(pkgJSON.dependencies),
+
   watch: {
-    onRebuild(err) {
+    async onRebuild(err) {
+      await buildTypes()
+
       if (err) {
         console.error(err)
       } else {
@@ -46,6 +63,8 @@ const result = await esbuild.build({
     },
   },
 })
+
+await buildTypes()
 
 if (result.errors.length > 0) {
   console.error(result.errors)

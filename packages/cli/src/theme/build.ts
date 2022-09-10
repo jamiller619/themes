@@ -47,17 +47,17 @@ const parseValue = (
     return `${value.value}${value.unit}`
   }
 
+  /**
+   * It's super annoying that Array.isArray doesn't properly
+   * narrow types in TS, forcing me to explicity type the value
+   */
   if (Array.isArray(value)) {
-    return (
-      (value as (string | number)[])
-        // .filter((v) => v != null)
-        .reduce((acc, curr, i) => {
-          const modifier = calcModifier(i)
-          acc[modifier] = curr
+    return (value as (string | number)[]).reduce((acc, curr, i) => {
+      const modifier = calcModifier(i)
+      acc[modifier] = convertToPx ? `${curr}px` : curr
 
-          return acc
-        }, {} as Record<string, string | number>)
-    )
+      return acc
+    }, {} as Record<string, string | number>)
   }
 }
 

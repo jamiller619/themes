@@ -28,9 +28,14 @@ export type InputThemeValue<T = string | number> =
   | CustomUnit<T>
   | CustomUnit<T>[]
 
+export type InputThemeScaleOptions = ModularScaleOptions & {
+  field?: string
+  fields?: string[]
+}
+
 export type InputTheme = {
   name: string
-  scale?: ModularScaleOptions
+  scale?: InputThemeScaleOptions
   fonts?: Scale<string> & {
     monospace?: string
   }
