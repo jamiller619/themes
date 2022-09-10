@@ -7,6 +7,7 @@ import mapObject, { mapObjectSkip } from 'map-obj'
 import { toCustomPropertiesString } from 'object-to-css-variables'
 import { ColorRole, expandToRadixColor } from '~/colors'
 import { createScales } from '~/modular-scale'
+import calcModifier from '~/utils/calcModifier'
 import { InputTheme } from './Theme'
 import schema from './schema.json' assert { type: 'json' }
 
@@ -29,7 +30,7 @@ const readFile = async <T>(path: string) => {
 const parseValue = (
   value: InputTheme[keyof InputTheme],
   convertToPx = true
-): string | string[] | undefined => {
+): string | Record<string, string | number> | undefined => {
   if (typeof value === 'string') {
     return value
   }
@@ -43,9 +44,16 @@ const parseValue = (
   }
 
   if (Array.isArray(value)) {
-    const valueArr = value.map((val) => parseValue(val, convertToPx)).flat()
+    return (
+      (value as (string | number)[])
+        // .filter((v) => v != null)
+        .reduce((acc, curr, i) => {
+          const modifier = calcModifier(i)
+          acc[modifier] = curr
 
-    return valueArr.filter((v) => v != null) as string[]
+          return acc
+        }, {} as Record<string, string | number>)
+    )
   }
 }
 
@@ -67,13 +75,6 @@ const saveFile = async (
 type BuildOptions = {
   theme: string
   css: string
-}
-
-const parseBuildOptions = (buildOptions: BuildOptions) => {
-  return {
-    theme: resolvedThemeFile,
-    cssProperties: resolvedCSSFile,
-  }
 }
 
 /**
