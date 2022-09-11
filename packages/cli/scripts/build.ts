@@ -4,7 +4,6 @@ import process from 'node:process'
 import { TsconfigPathsPlugin } from '@esbuild-plugins/tsconfig-paths'
 import chalk from 'chalk'
 import esbuild from 'esbuild'
-import dts from 'npm-dts'
 import dirname from '../lib/dirname.js'
 import pkgJSON from '../package.json' assert { type: 'json' }
 
@@ -17,15 +16,6 @@ console.log(
     '@themes/cli\n'
   )}`
 )
-
-const { Generator } = dts
-
-const buildTypes = async () => {
-  new Generator({
-    entry: 'src/index.ts',
-    output: 'bin/index.d.ts',
-  }).generate()
-}
 
 const result = await esbuild.build({
   plugins: [
@@ -47,8 +37,6 @@ const result = await esbuild.build({
 
   watch: {
     async onRebuild(err) {
-      await buildTypes()
-
       if (err) {
         console.error(err)
       } else {
@@ -63,8 +51,6 @@ const result = await esbuild.build({
     },
   },
 })
-
-await buildTypes()
 
 if (result.errors.length > 0) {
   console.error(result.errors)
