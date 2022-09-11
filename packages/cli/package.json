@@ -22,11 +22,11 @@
   },
   "scripts": {
     "dx": "yarn build -w",
-    "build": "yarn schema:chk && yarn build:types && yarn run:node scripts/build.ts",
-    "build:types": "yarn clean:types && yarn npm-dts -o bin/index.d.ts generate",
+    "build": "yarn schema:chk && yarn run:node scripts/build.ts",
+    "build:types": "yarn clean:types && yarn npm-dts -e src/index.ts -o .types/index.d.ts generate",
     "schema:chk": "yarn run:node scripts/schema.ts",
     "run:node": "node --experimental-json-modules --loader ts-node/esm",
-    "clean:types": "yarn rimraf bin/index.d.ts"
+    "clean:types": "yarn rimraf .types"
   },
   "dependencies": {
     "@radix-ui/colors": "^0.1.8",
