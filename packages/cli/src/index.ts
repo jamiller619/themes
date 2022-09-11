@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import yargs from 'yargs'
 import build from '~/theme/build'
+import watch from '~/theme/watch'
 
 const { argv } = yargs(process.argv.slice(2))
   .usage('Usage: -i <input file> -o <output dir>')
@@ -24,11 +25,18 @@ const { argv } = yargs(process.argv.slice(2))
     demandOption: true,
     default: './_variables.css',
   })
+  .option('watch', {
+    alias: 'w',
+    describe: 'Run build in watch mode',
+    type: 'boolean',
+    default: false,
+  })
 
 try {
   const options = await argv
+  const cmd = options.watch ? watch : build
 
-  await build(options.input, {
+  await cmd(options.input, {
     css: options.css,
     theme: options.theme,
   })

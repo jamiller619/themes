@@ -32,7 +32,6 @@
     "dx": "yarn build -w",
     "build": "yarn schema:chk && yarn run:node scripts/build.ts",
     "build:types": "yarn clean:types && yarn npm-dts -e src/index.ts -o .types/index.d.ts generate",
-    "build:dist": "yarn pack",
     "schema:chk": "yarn run:node scripts/schema.ts",
     "run:node": "node --experimental-json-modules --loader ts-node/esm",
     "clean:types": "yarn rimraf .types"
@@ -41,6 +40,7 @@
     "@radix-ui/colors": "^0.1.8",
     "ajv": "^8.11.0",
     "chalk": "^5.0.1",
+    "chokidar": "^3.5.3",
     "debug": "^4.3.4",
     "map-obj": "^5.0.2",
     "object-to-css-variables": "^0.2.0",

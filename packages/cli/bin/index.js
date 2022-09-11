@@ -468,6 +468,27 @@ async function build(input, opts) {
   console.log(marks.pass, chalk.green(`Done!`));
 }
 
+// src/theme/watch.ts
+import chokidar from "chokidar";
+import debug3 from "debug";
+var log3 = debug3("watch");
+var watcher = null;
+async function watch(input, opts) {
+  if (watcher) {
+    log3(`Closing previous watcher...`);
+    await watcher.close();
+    watcher = null;
+  }
+  console.log("Running builder in watch mode");
+  watcher = chokidar.watch(input);
+  const doit = async () => {
+    await build(input, opts);
+    console.log("Successfully rebuilt themes");
+  };
+  watcher.on("change", doit);
+  watcher.on("ready", doit);
+}
+
 // src/index.ts
 var { argv } = yargs(process.argv.slice(2)).usage("Usage: -i <input file> -o <output dir>").option("input", {
   alias: "i",
@@ -486,10 +507,16 @@ var { argv } = yargs(process.argv.slice(2)).usage("Usage: -i <input file> -o <ou
   type: "string",
   demandOption: true,
   default: "./_variables.css"
+}).option("watch", {
+  alias: "w",
+  describe: "Run build in watch mode",
+  type: "boolean",
+  default: false
 });
 try {
   const options = await argv;
-  await build(options.input, {
+  const cmd = options.watch ? watch : build;
+  await cmd(options.input, {
     css: options.css,
     theme: options.theme
   });
