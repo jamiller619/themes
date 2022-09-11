@@ -159,16 +159,92 @@ function create(scaleOptions) {
 // src/theme/schema.json
 var schema_default = {
   $schema: "http://json-schema.org/draft-07/schema#",
-  $ref: "#/definitions/InputTheme",
   definitions: {
-    InputTheme: {
+    ThemeValue: {
+      anyOf: [
+        {
+          type: "number"
+        },
+        {
+          type: "array",
+          items: {
+            type: "number"
+          }
+        },
+        {
+          type: "string"
+        },
+        {
+          type: "array",
+          items: {
+            type: "string"
+          }
+        },
+        {
+          $ref: "#/definitions/CustomUnit"
+        },
+        {
+          $ref: "#/definitions/Scale"
+        },
+        {
+          $ref: "#/definitions/Scale%3CCustomUnit%3E"
+        }
+      ]
+    },
+    CustomUnit: {
+      type: "object",
+      properties: {
+        value: {
+          type: [
+            "number",
+            "string"
+          ]
+        },
+        unit: {
+          type: "string"
+        }
+      },
+      required: [
+        "value",
+        "unit"
+      ],
+      additionalProperties: false
+    },
+    Scale: {
+      type: "object",
+      properties: {
+        body: {
+          type: [
+            "number",
+            "string"
+          ]
+        },
+        heading: {
+          type: [
+            "number",
+            "string"
+          ]
+        }
+      },
+      additionalProperties: false
+    },
+    "Scale<CustomUnit>": {
+      type: "object",
+      properties: {
+        body: {
+          $ref: "#/definitions/CustomUnit"
+        },
+        heading: {
+          $ref: "#/definitions/CustomUnit"
+        }
+      },
+      additionalProperties: false
+    },
+    Theme: {
       type: "object",
       properties: {
         name: {
           type: "string"
-        },
-        scale: {
-          $ref: "#/definitions/InputThemeScaleOptions"
         },
         fonts: {
           type: "object",
@@ -186,7 +262,10 @@ var schema_default = {
           }
         },
         radii: {
-          $ref: "#/definitions/InputThemeValue%3Cnumber%3E"
+          type: "array",
+          items: {
+            $ref: "#/definitions/ThemeValue"
+          }
         },
         fontWeights: {
           type: "object",
@@ -217,6 +296,15 @@ var schema_default = {
           additionalProperties: {
             type: "string"
           }
+        },
+        scale: {
+          $ref: "#/definitions/ModularScaleOptions"
+        },
+        fontSize: {
+          $ref: "#/definitions/ThemeValue"
+        },
+        space: {
+          $ref: "#/definitions/ThemeValue"
         }
       },
       required: [
@@ -225,32 +313,25 @@ var schema_default = {
       ],
       additionalProperties: false
     },
-    InputThemeScaleOptions: {
+    "Scale<string>": {
       type: "object",
-      additionalProperties: false,
       properties: {
-        field: {
+        body: {
           type: "string"
         },
-        fields: {
-          type: "array",
-          items: {
-            type: "string"
-          }
-        },
+        heading: {
+          type: "string"
+        }
+      },
+      additionalProperties: false
+    },
+    ModularScaleOptions: {
+      type: "object",
+      properties: {
         base: {
           anyOf: [
             {
-              type: "string"
-            },
-            {
               type: "number"
-            },
-            {
-              type: "array",
-              items: {
-                type: "string"
-              }
             },
             {
               type: "array",
@@ -260,9 +341,6 @@ var schema_default = {
             }
           ]
         },
-        unit: {
-          type: "string"
-        },
         ratio: {
           type: [
             "string",
@@ -270,71 +348,19 @@ var schema_default = {
           ]
         },
         points: {
-          type: [
-            "string",
-            "number"
-          ]
+          type: "number"
         },
         pointStart: {
-          type: [
-            "string",
-            "number"
-          ]
-        }
-      }
-    },
-    "InputThemeValue<number>": {
-      anyOf: [
-        {
           type: "number"
         },
-        {
-          type: "array",
-          items: {
-            type: "number"
-          }
-        },
-        {
-          $ref: "#/definitions/CustomUnit%3Cnumber%3E"
-        },
-        {
-          type: "array",
-          items: {
-            $ref: "#/definitions/CustomUnit%3Cnumber%3E"
-          }
-        }
-      ]
-    },
-    "CustomUnit<number>": {
-      type: "object",
-      properties: {
-        value: {
-          type: "number"
-        },
-        unit: {
+        field: {
           type: "string"
-        }
-      },
-      required: [
-        "value",
-        "unit"
-      ],
-      additionalProperties: false
-    },
-    Scale: {
-      type: "object",
-      properties: {
-        body: {
-          type: [
-            "number",
-            "string"
-          ]
         },
-        heading: {
-          type: [
-            "number",
-            "string"
-          ]
+        fields: {
+          type: "array",
+          items: {
+            type: "string"
+          }
         }
       },
       additionalProperties: false
