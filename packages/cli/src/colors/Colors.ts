@@ -1,8 +1,6 @@
 import * as RadixColors from '@radix-ui/colors'
 
 export type ColorScheme = keyof typeof RadixColors
-export type ColorMode = 'light' | 'dark'
-
 export type ColorRole =
   | 'primary'
   | 'accent'

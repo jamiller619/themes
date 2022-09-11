@@ -10,7 +10,7 @@
     "themes": "bin/index.js"
   },
   "files": [
-    "bin/**/*"
+    "bin"
   ],
   "engines": {
     "node": ">=16.14.0"
